@@ -89,7 +89,7 @@ class PrinterView (ctx : Context) : View(ctx) {
         fun draw(canvas : Canvas, paint : Paint) {
             val w : Float = canvas.width.toFloat()
             val h : Float = canvas.height.toFloat()
-            val pSize : Float = Math.min(w, h)/5
+            val pSize : Float = Math.min(w, h)/4
             val paperHeight : Float = Math.min(w, h)/3
             val gap : Float = paperHeight/4
             paint.strokeWidth = paperHeight/20
@@ -107,7 +107,7 @@ class PrinterView (ctx : Context) : View(ctx) {
             canvas.drawRect(0f, -paperHeight * state.scales[0], 2 * pSize/3, 0f, paint)
             var y : Float = -paperHeight + gap
             for (i in 0..2) {
-                canvas.drawLine( -pSize/4, y, pSize/4, y, paint)
+                canvas.drawLine( -pSize/4, y, -pSize/4 + (pSize/2) * state.scales[1], y, paint)
                 y += gap
             }
             canvas.restore()
