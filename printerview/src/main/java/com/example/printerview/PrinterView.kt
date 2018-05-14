@@ -36,7 +36,7 @@ class PrinterView (ctx : Context) : View(ctx) {
         fun update(stopcb : (Float) -> Unit) {
             scales[j] += dir * 0.1f
             if (Math.abs(scales[j] - prevScale) > 1) {
-                prevScale = scales[j] + dir
+                scales[j] = prevScale + dir
                 j += dir.toInt()
                 if (j == scales.size || j == -1) {
                     j -= dir.toInt()
@@ -98,16 +98,16 @@ class PrinterView (ctx : Context) : View(ctx) {
             canvas.save()
             canvas.translate(w/2, h/2)
             paint.style = Paint.Style.STROKE
-            canvas.drawRoundRect(RectF(-pSize, -pSize/2, pSize, -pSize/2 ), pSize/10, pSize/10, paint)
+            canvas.drawRoundRect(RectF(-pSize, -pSize/2, pSize, pSize/2 ), pSize/10, pSize/10, paint)
             paint.style = Paint.Style.FILL
-            canvas.drawRoundRect(RectF(-pSize/2, -pSize/4, pSize/2, -pSize/4), pSize/10, pSize/10, paint)
+            canvas.drawRoundRect(RectF(-pSize/2, -pSize/4, pSize/2, pSize/4), pSize/10, pSize/10, paint)
             canvas.save()
-            canvas.translate(-pSize/3, -pSize/4)
+            canvas.translate(-2 * pSize/3, -pSize/2)
             paint.style = Paint.Style.STROKE
-            canvas.drawRect(0f, -paperHeight * state.scales[0], 2 * pSize/3, 0f, paint)
+            canvas.drawRect(0f, -paperHeight * state.scales[0],  4 * pSize/3, 0f, paint)
             var y : Float = -paperHeight + gap
             for (i in 0..2) {
-                canvas.drawLine( -pSize/4, y, -pSize/4 + (pSize/2) * state.scales[1], y, paint)
+                canvas.drawLine( pSize/5, y, pSize/5 + ((pSize) * state.scales[1]), y, paint)
                 y += gap
             }
             canvas.restore()
