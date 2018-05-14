@@ -119,4 +119,28 @@ class PrinterView (ctx : Context) : View(ctx) {
             state.startUpdating(startcb)
         }
     }
+
+    data class Renderer(var view : PrinterView) {
+
+        private val animator : Animator = Animator(view)
+
+        private val printerShape : PrinterShape = PrinterShape(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#212121"))
+            printerShape.draw(canvas, paint)
+            animator.animate {
+                printerShape.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            printerShape.startUpdating {
+                animator.start()
+            }
+        }
+
+    }
 }
