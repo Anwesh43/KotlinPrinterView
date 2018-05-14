@@ -4,6 +4,7 @@ package com.example.printerview
  * Created by anweshmishra on 14/05/18.
  */
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.*
 import android.view.View
@@ -143,6 +144,13 @@ class PrinterView (ctx : Context) : View(ctx) {
                 animator.start()
             }
         }
+    }
 
+    companion object {
+        fun create(activity : Activity) : PrinterView {
+            val view : PrinterView = PrinterView(activity)
+            activity.setContentView(view)
+            return view
+        }
     }
 }
