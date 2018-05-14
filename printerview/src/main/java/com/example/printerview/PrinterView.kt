@@ -28,7 +28,7 @@ class PrinterView (ctx : Context) : View(ctx) {
 
     data class State(var prevScale : Float = 0f, var dir : Float = 0f, var j : Int = 0) {
 
-        val scales : Array<Float> = arrayOf(0f, 0f, 0f)
+        val scales : Array<Float> = arrayOf(0f, 0f)
 
         fun update(stopcb : (Float) -> Unit) {
             scales[j] += dir * 0.1f
@@ -79,5 +79,44 @@ class PrinterView (ctx : Context) : View(ctx) {
             }
         }
 
+    }
+
+    data class PrinterShape(var i : Int, val state : State = State()) {
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            val w : Float = canvas.width.toFloat()
+            val h : Float = canvas.height.toFloat()
+            val pSize : Float = Math.min(w, h)/5
+            val paperHeight : Float = Math.min(w, h)/3
+            val gap : Float = paperHeight/4
+            paint.strokeWidth = paperHeight/20
+            paint.strokeCap = Paint.Cap.ROUND
+            paint.color = Color.WHITE
+            canvas.save()
+            canvas.translate(w/2, h/2)
+            paint.style = Paint.Style.STROKE
+            canvas.drawRoundRect(RectF(-pSize, -pSize/2, pSize, -pSize/2 ), pSize/10, pSize/10, paint)
+            paint.style = Paint.Style.FILL
+            canvas.drawRoundRect(RectF(-pSize/2, -pSize/4, pSize/2, -pSize/4), pSize/10, pSize/10, paint)
+            canvas.save()
+            canvas.translate(-pSize/3, -pSize/4)
+            paint.style = Paint.Style.STROKE
+            canvas.drawRect(0f, -paperHeight * state.scales[0], 2 * pSize/3, 0f, paint)
+            var y : Float = -paperHeight + gap
+            for (i in 0..2) {
+                canvas.drawLine( -pSize/4, y, pSize/4, y, paint)
+                y += gap
+            }
+            canvas.restore()
+            canvas.restore()
+        }
+
+        fun update(stopcb : (Float) -> Unit) {
+            state.update(stopcb)
+        }
+
+        fun startUpdating(startcb : () -> Unit) {
+            state.startUpdating(startcb)
+        }
     }
 }
